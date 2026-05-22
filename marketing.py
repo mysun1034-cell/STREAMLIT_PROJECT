@@ -44,12 +44,15 @@ if location != "전체":
     
 col1, col2, col3 = st.columns(3)
 col1.metric("총 캠페인 수", f"{len(filtered):,}")
-col2.metric("평균 ROI", f"{filtered['ROI'].mean():.2f}")
-col3.metric("평균 전환율", f"{filtered['Conversion_Rate'].mean():.1%}")
+col2.metric("총 클릭 수", f"{filtered['Clicks'].sum():,}")
+col3.metric("총 노출 수", f"{filtered['Impressions'].sum():,}")
 
-fig = px.bar(
-    filtered.groupby('Campaign_Type')['ROI'].mean().reset_index(),
-    x='Campaign_Type', y='ROI',
-    title='캠페인 유형별 평균 ROI'
+
+fig = px.line(
+    filtered.groupby('Date')['Clicks'].sum().reset_index(),
+    x='Date', y='Clicks',
+    title='날짜별 총 클릭 수'
 )
+
 st.plotly_chart(fig)
+
